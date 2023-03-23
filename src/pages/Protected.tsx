@@ -1,6 +1,7 @@
-import { LOGIN } from 'lib/routes';
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+
+import { LOGIN } from 'lib/routes';
 
 export default function Protected() {
   const { pathname } = useLocation();
