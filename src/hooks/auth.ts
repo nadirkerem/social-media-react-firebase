@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { useToast, UseToastOptions } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
-import { auth } from 'lib/firebase';
+import { auth, db } from 'lib/firebase';
+import isUsernameExists from 'utils/is-username-exists';
 
 import { DASHBOARD, LOGIN } from 'lib/routes';
 
@@ -76,4 +81,64 @@ export function useLogout() {
   }
 
   return { logout, isLoading };
+}
+
+export function useRegister() {
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const toast = useToast();
+
+  async function register({
+    username,
+    email,
+    password,
+    redirectTo = DASHBOARD,
+  }: UserAuth) {
+    setIsLoading(true);
+
+    const usernameExists = await isUsernameExists(username as string);
+
+    if (usernameExists) {
+      toast({
+        title: 'An error occurred',
+        description: 'Username already exists',
+        status: 'error',
+        ...toastOptions,
+      });
+      setIsLoading(false);
+      return false;
+    } else {
+      try {
+        const createdUser = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        await setDoc(doc(db, 'users', createdUser.user.uid), {
+          id: createdUser.user.uid,
+          username: username!.toLowerCase(),
+          avatar: '',
+          email,
+          createdAt: serverTimestamp(),
+        });
+        toast({
+          title: 'You are successfully registered',
+          status: 'success',
+          ...toastOptions,
+        });
+        navigate(redirectTo);
+      } catch (error: any) {
+        toast({
+          title: 'An error occurred',
+          description: error.message,
+          status: 'error',
+          ...toastOptions,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  }
+
+  return { register, isLoading };
 }
