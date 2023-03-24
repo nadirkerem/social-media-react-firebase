@@ -1,17 +1,23 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
+import { useAuth } from 'hooks/auth';
 import { LOGIN } from 'lib/routes';
 
 export default function Protected() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const { user, isLoading } = useAuth();
 
   useEffect(() => {
-    if (pathname.startsWith('/protected')) {
+    if (pathname.startsWith('/protected') && !user) {
       navigate(LOGIN);
     }
-  }, [pathname]);
+  }, [pathname, user]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

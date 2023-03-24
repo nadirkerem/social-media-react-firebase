@@ -9,9 +9,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
+
+import { useLogin } from 'hooks/auth';
+
 import { REGISTER } from 'lib/routes';
 
 export default function Login() {
+  const { login, isLoading } = useLogin();
+
   return (
     <Center w="100%" h="100vh">
       <Box maxW="md" p="10" borderWidth="1px" borderRadius="sm">
