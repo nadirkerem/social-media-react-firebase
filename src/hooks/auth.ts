@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useToast } from '@chakra-ui/react';
+import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
+import { useToast, UseToastOptions } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { auth } from 'lib/firebase';
 
-import { DASHBOARD } from 'lib/routes';
+import { DASHBOARD, LOGIN } from 'lib/routes';
 
 export function useAuth() {
   const [authUser, isLoading, error] = useAuthState(auth);
@@ -14,10 +14,10 @@ export function useAuth() {
   return { user: authUser, isLoading, error };
 }
 
-type LoginProps = {
-  email: string;
-  password: string;
-  redirectTo?: string;
+const toastOptions: UseToastOptions = {
+  duration: 6000,
+  isClosable: true,
+  position: 'top',
 };
 
 export function useLogin() {
@@ -25,21 +25,14 @@ export function useLogin() {
   const navigate = useNavigate();
   const toast = useToast();
 
-  async function login({
-    email,
-    password,
-    redirectTo = DASHBOARD,
-  }: LoginProps) {
+  async function login({ email, password, redirectTo = DASHBOARD }: UserAuth) {
     setIsLoading(true);
-
     try {
       await signInWithEmailAndPassword(auth, email, password);
       toast({
         title: 'You are successfully logged in',
         status: 'success',
-        duration: 6000,
-        isClosable: true,
-        position: 'top',
+        ...toastOptions,
       });
       navigate(redirectTo);
     } catch (error: any) {
@@ -47,10 +40,9 @@ export function useLogin() {
         title: 'An error occurred',
         description: error.message,
         status: 'error',
-        duration: 6000,
-        isClosable: true,
-        position: 'top',
+        ...toastOptions,
       });
+      setIsLoading(false);
       return false;
     }
     setIsLoading(false);
@@ -58,4 +50,30 @@ export function useLogin() {
   }
 
   return { login, isLoading };
+}
+
+export function useLogout() {
+  const [signOut, isLoading, error] = useSignOut(auth);
+  const navigate = useNavigate();
+  const toast = useToast();
+
+  async function logout() {
+    if (await signOut()) {
+      toast({
+        title: 'You are successfully logged out',
+        status: 'success',
+        ...toastOptions,
+      });
+      navigate(LOGIN);
+    } else {
+      toast({
+        title: 'An error occurred',
+        description: error?.message,
+        status: 'error',
+        ...toastOptions,
+      });
+    }
+  }
+
+  return { logout, isLoading };
 }

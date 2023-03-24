@@ -3,6 +3,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from 'hooks/auth';
 import { LOGIN } from 'lib/routes';
+import Navbar from 'components/navbar';
 
 export default function Protected() {
   const { pathname } = useLocation();
@@ -21,6 +22,7 @@ export default function Protected() {
 
   return (
     <>
+      <Navbar />
       <Outlet />
     </>
   );

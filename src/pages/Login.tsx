@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   FormControl,
+  FormErrorMessage,
   Heading,
   Input,
   Link,
@@ -14,11 +15,26 @@ import { useForm } from 'react-hook-form';
 import { useLogin } from 'hooks/auth';
 import { emailValidation, passwordValidation } from 'utils/form-validation';
 
-import { REGISTER } from 'lib/routes';
+import { DASHBOARD, REGISTER } from 'lib/routes';
 
 export default function Login() {
   const { login, isLoading } = useLogin();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  async function handleLogin(data: UserAuth) {
+    const loggedIn = await login({
+      email: data.email,
+      password: data.password,
+      redirectTo: DASHBOARD,
+    });
+
+    if (loggedIn) reset();
+  }
 
   return (
     <Center w="100%" h="100vh">
@@ -26,22 +42,39 @@ export default function Login() {
         <Heading mb="5" size="lg" textAlign="center">
           Log Into Your Account
         </Heading>
-        <form>
-          <FormControl py="2">
+        <form
+          onSubmit={handleSubmit(({ email, password }) =>
+            handleLogin({ email, password })
+          )}
+        >
+          <FormControl isInvalid={!!errors.email} py="2">
             <Input
               type="email"
               placeholder="Email"
               {...register('email', emailValidation)}
             />
+            <FormErrorMessage>
+              {errors.email?.message as string}
+            </FormErrorMessage>
           </FormControl>
-          <FormControl py="2">
+          <FormControl isInvalid={!!errors.password} py="2">
             <Input
               type="password"
               placeholder="Password"
               {...register('password', passwordValidation)}
             />
+            <FormErrorMessage>
+              {errors.password?.message as string}
+            </FormErrorMessage>
           </FormControl>
-          <Button mt="3" type="submit" colorScheme="cyan" w="full">
+          <Button
+            mt="3"
+            type="submit"
+            colorScheme="cyan"
+            w="full"
+            isLoading={isLoading}
+            loadingText="Logging In"
+          >
             Log In
           </Button>
         </form>
