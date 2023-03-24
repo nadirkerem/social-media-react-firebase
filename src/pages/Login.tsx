@@ -9,13 +9,16 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
 import { useLogin } from 'hooks/auth';
+import { emailValidation, passwordValidation } from 'utils/form-validation';
 
 import { REGISTER } from 'lib/routes';
 
 export default function Login() {
   const { login, isLoading } = useLogin();
+  const { register, handleSubmit } = useForm();
 
   return (
     <Center w="100%" h="100vh">
@@ -25,10 +28,18 @@ export default function Login() {
         </Heading>
         <form>
           <FormControl py="2">
-            <Input type="email" placeholder="Email" />
+            <Input
+              type="email"
+              placeholder="Email"
+              {...register('email', emailValidation)}
+            />
           </FormControl>
           <FormControl py="2">
-            <Input type="password" placeholder="Password" />
+            <Input
+              type="password"
+              placeholder="Password"
+              {...register('password', passwordValidation)}
+            />
           </FormControl>
           <Button mt="3" type="submit" colorScheme="cyan" w="full">
             Log In
