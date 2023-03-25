@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
 import { useToast, UseToastOptions } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
@@ -14,9 +14,27 @@ import isUsernameExists from 'utils/is-username-exists';
 import { DASHBOARD, LOGIN } from 'lib/routes';
 
 export function useAuth() {
-  const [authUser, isLoading, error] = useAuthState(auth);
+  const [authUser, authLoading, error] = useAuthState(auth);
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<User | null>(null);
 
-  return { user: authUser, isLoading, error };
+  useEffect(() => {
+    async function fetchData() {
+      setIsLoading(true);
+      const userData = (await (
+        await getDoc(doc(db, 'users', authUser!.uid))
+      ).data()) as User;
+      setUser(userData);
+      setIsLoading(false);
+    }
+
+    if (!authLoading) {
+      if (authUser) fetchData();
+      else setIsLoading(false);
+    }
+  }, [authLoading]);
+
+  return { user, isLoading, error };
 }
 
 const toastOptions: UseToastOptions = {

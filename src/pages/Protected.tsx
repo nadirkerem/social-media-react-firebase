@@ -11,14 +11,10 @@ export default function Protected() {
   const { user, isLoading } = useAuth();
 
   useEffect(() => {
-    if (pathname.startsWith('/protected') && !user) {
+    if (!isLoading && pathname.startsWith('/protected') && !user) {
       navigate(LOGIN);
     }
-  }, [pathname, user]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  }, [isLoading, pathname, user]);
 
   return (
     <>
