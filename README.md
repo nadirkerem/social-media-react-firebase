@@ -1,5 +1,5 @@
 # Social Media App
 
-This is a social media app that allows users to create an account, login, and post messages. The app is built using React, Redux Toolkit, and Firebase.
+This is a social media app that is built using React and Firebase.
 
-This project has not yet completed.
+More information will be added as the project progresses.

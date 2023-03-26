@@ -1,6 +1,5 @@
 {
-  "name": "social-media-firebase",
-  "private": true,
+  "name": "social-media-react-firebase",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
