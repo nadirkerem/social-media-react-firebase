@@ -1,3 +1,9 @@
+import AddPost from 'components/add-post';
+
 export default function Dashboard() {
-  return <div>Dashboard</div>;
+  return (
+    <>
+      <AddPost />
+    </>
+  );
 }

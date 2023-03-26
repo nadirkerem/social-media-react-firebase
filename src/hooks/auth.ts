@@ -5,13 +5,14 @@ import {
 } from 'firebase/auth';
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { useAuthState, useSignOut } from 'react-firebase-hooks/auth';
-import { useToast, UseToastOptions } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 import { auth, db } from 'lib/firebase';
 import isUsernameExists from 'utils/is-username-exists';
 
 import { DASHBOARD, LOGIN } from 'lib/routes';
+import { toastOptions } from 'utils/toast';
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth);
@@ -36,12 +37,6 @@ export function useAuth() {
 
   return { user, isLoading, error };
 }
-
-const toastOptions: UseToastOptions = {
-  duration: 6000,
-  isClosable: true,
-  position: 'top',
-};
 
 export function useLogin() {
   const [isLoading, setIsLoading] = useState(false);
