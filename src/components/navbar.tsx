@@ -15,7 +15,6 @@ export default function Navbar() {
       width="full"
       height="16"
       zIndex="2"
-      shadow="xl"
       borderBottom="1px solid"
       borderColor="gray.200"
       bg="cyan.400"

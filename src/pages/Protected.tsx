@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Box, Flex } from '@chakra-ui/react';
+
+import Navbar from 'components/navbar';
+import Sidebar from 'components/sidebar';
 
 import { useAuth } from 'hooks/auth';
 import { LOGIN } from 'lib/routes';
-import Navbar from 'components/navbar';
 
 export default function Protected() {
   const { pathname } = useLocation();
@@ -18,8 +21,15 @@ export default function Protected() {
 
   return (
     <>
-      <Navbar />
-      <Outlet />
+      <Box bg="#f0f2f5">
+        <Navbar />
+        <Flex pt="16" pb="12" mx="auto" w="full" maxW="1200px">
+          <Sidebar />
+          <Box w="900px">
+            <Outlet />
+          </Box>
+        </Flex>
+      </Box>
     </>
   );
 }
