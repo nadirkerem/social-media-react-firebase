@@ -19,7 +19,7 @@ export default function AddPost() {
   }
 
   return (
-    <Box maxW="600px" py="10" ml="12">
+    <Box maxW="600px" mx="auto" py="10">
       <form onSubmit={handleSubmit(({ text }) => handleAddPost({ text }))}>
         <HStack justify="space-between">
           <Heading size="xl">Share your thoughts</Heading>
@@ -39,6 +39,7 @@ export default function AddPost() {
           resize="none"
           focusBorderColor="cyan.600"
           placeholder="What do you think?"
+          borderRadius="md"
           {...register('text', { required: true })}
         ></Textarea>
       </form>

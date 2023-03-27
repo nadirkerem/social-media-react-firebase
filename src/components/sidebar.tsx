@@ -5,10 +5,11 @@ import ActiveUser from './active-user';
 export default function Sidebar() {
   return (
     <Box
-      px="6"
+      px="4"
       height="100vh"
       w="100%"
       maxW="300px"
+      mr="8"
       position="sticky"
       top="16"
       display={{ md: 'block' }}

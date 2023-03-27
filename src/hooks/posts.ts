@@ -1,7 +1,16 @@
 import { useState } from 'react';
 import { useToast } from '@chakra-ui/toast';
 import { uuidv4 } from '@firebase/util';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  CollectionReference,
+  doc,
+  query,
+  serverTimestamp,
+  setDoc,
+  orderBy,
+} from 'firebase/firestore';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import { db } from 'lib/firebase';
 import { toastOptions } from 'utils/toast';
@@ -29,4 +38,16 @@ export function useAddPost() {
   }
 
   return { addPost, isLoading };
+}
+
+export function usePosts() {
+  const q = query(
+    collection(db, 'posts') as CollectionReference<Post>,
+    orderBy('createdAt', 'desc')
+  );
+  const [posts, isLoading, error] = useCollectionData<Post>(q);
+
+  if (error) throw new Error(error.message);
+
+  return { posts, isLoading };
 }
