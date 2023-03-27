@@ -16,15 +16,15 @@ import { toastOptions } from 'utils/toast';
 
 export function useAuth() {
   const [authUser, authLoading, error] = useAuthState(auth);
-  const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [user, setUser] = useState<User | undefined>();
 
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
-      const userData = (await (
+      const userData = (
         await getDoc(doc(db, 'users', authUser!.uid))
-      ).data()) as User;
+      ).data() as User;
       setUser(userData);
       setIsLoading(false);
     }

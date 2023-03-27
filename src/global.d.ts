@@ -16,7 +16,7 @@ interface Post {
   id: string;
   text: string;
   uid: string;
-  createdAt: import('@firebase/firestore-types').FieldValue;
+  createdAt: number;
   updatedAt?: string;
   likes: string[];
 }

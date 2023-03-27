@@ -3,18 +3,18 @@ import { Link } from 'react-router-dom';
 
 import { PROTECTED } from 'lib/routes';
 
-export default function avatar({
+export default function Avatar({
   user,
   size,
 }: {
-  user: User | null;
+  user: User | undefined;
   size: string;
 }) {
   return (
     <ChakraAvatar
       as={Link}
       to={`${PROTECTED}/profile/${user?.id}`}
-      name={user?.username}
+      name={user?.avatar ? '' : user?.username}
       colorScheme="green"
       size={size}
       src={user?.avatar}

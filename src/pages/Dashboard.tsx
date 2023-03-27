@@ -14,7 +14,7 @@ export default function Dashboard() {
       <AddPost />
       {postsLoading ? (
         <Box align="center">
-          <Spinner />
+          <Spinner size="xl" />
         </Box>
       ) : (
         <AllPosts posts={posts} />

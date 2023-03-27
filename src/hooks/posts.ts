@@ -6,7 +6,6 @@ import {
   CollectionReference,
   doc,
   query,
-  serverTimestamp,
   setDoc,
   orderBy,
 } from 'firebase/firestore';
@@ -25,7 +24,7 @@ export function useAddPost() {
     const newPost: Post = {
       ...post,
       id,
-      createdAt: serverTimestamp(),
+      createdAt: Date.now(),
       likes: [],
     };
     await setDoc(doc(db, 'posts', id), newPost);

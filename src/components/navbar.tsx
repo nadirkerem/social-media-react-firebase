@@ -20,15 +20,7 @@ export default function Navbar() {
       bg="cyan.400"
     >
       <Flex w="full" maxW="1200px" align="center" px="4" bg="cyan.400">
-        <Link
-          as={RouterLink}
-          to={DASHBOARD}
-          fontWeight="bold"
-          color="white"
-          _hover={{
-            textDecoration: 'none',
-          }}
-        >
+        <Link as={RouterLink} to={DASHBOARD} fontWeight="bold" color="white">
           Home
         </Link>
         <Button ml="auto" size="sm" onClick={logout} isLoading={isLoading}>

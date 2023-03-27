@@ -9,7 +9,7 @@ export default function Sidebar() {
       height="100vh"
       w="100%"
       maxW="300px"
-      mr="8"
+      mr="4"
       position="sticky"
       top="16"
       display={{ md: 'block' }}
