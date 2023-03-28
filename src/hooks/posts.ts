@@ -8,6 +8,9 @@ import {
   query,
   setDoc,
   orderBy,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
 } from 'firebase/firestore';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
@@ -49,4 +52,30 @@ export function usePosts() {
   if (error) throw new Error(error.message);
 
   return { posts, isLoading };
+}
+
+export function useToggleLike({
+  id,
+  isLiked,
+  uid,
+}: {
+  id: string;
+  isLiked: boolean;
+  uid: string;
+}) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function toggleLike() {
+    setIsLoading(true);
+    const docRef = doc(db, 'posts', id);
+    await updateDoc(docRef, {
+      likes: isLiked ? arrayRemove(uid) : arrayUnion(uid),
+    });
+    setIsLoading(false);
+  }
+
+  return {
+    toggleLike,
+    isLoading,
+  };
 }

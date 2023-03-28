@@ -6,13 +6,8 @@ import Avatar from 'components/avatar';
 import { useUser } from 'hooks/users';
 import UsernameText from './username-text';
 
-export default function PostHeader({
-  uid,
-  createdAt,
-}: {
-  uid: string;
-  createdAt: number;
-}) {
+export default function PostHeader({ post }: { post: Post }) {
+  const { uid, createdAt } = post;
   const { user, isLoading: userLoading } = useUser(uid);
 
   return (

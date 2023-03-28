@@ -3,6 +3,7 @@ import Login from 'pages/Login';
 import Register from 'pages/Register';
 import Protected from 'pages/Protected';
 import Dashboard from 'pages/Dashboard';
+import Comments from 'pages/Comments';
 
 export const ROOT = '/';
 export const LOGIN = '/login';
@@ -10,8 +11,9 @@ export const REGISTER = '/register';
 
 export const PROTECTED = '/protected';
 export const DASHBOARD = '/protected/dashboard';
-export const PROFILE = '/protected/profile/:id';
 export const USERS = '/protected/users';
+export const PROFILE = '/protected/profile/:id';
+export const COMMENTS = '/protected/comments/:id';
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: USERS,
         element: 'Users',
+      },
+      {
+        path: COMMENTS,
+        element: <Comments />,
       },
     ],
   },
