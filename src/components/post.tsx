@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import PostActions from './post-actions';
 import PostHeader from './post-header';
 
@@ -7,7 +7,13 @@ export default function Post({ post }: { post: Post }) {
 
   return (
     <Box py="2" maxW="600px">
-      <Box border="2px solid" borderColor="gray.300" borderRadius="md">
+      <Box
+        // @ts-ignore
+        align="start"
+        border="2px solid"
+        borderColor="gray.300"
+        borderRadius="md"
+      >
         <PostHeader post={post} />
         <Box p="2" minH="100px">
           <Text wordBreak="break-word" fontSize={['sm', 'md']}>

@@ -1,8 +1,9 @@
 import { Text, Flex, IconButton } from '@chakra-ui/react';
 import { useAuth } from 'hooks/auth';
-import { useToggleLike } from 'hooks/posts';
+import { useToggleLike, useDeletePost } from 'hooks/posts';
 import { PROTECTED } from 'lib/routes';
 import { AiFillHeart, AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
+import { BsTrashFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 
 export default function PostActions({ post }: { post: Post }) {
@@ -18,17 +19,19 @@ export default function PostActions({ post }: { post: Post }) {
     uid: user?.id!,
   });
 
+  const { deletePost, isLoading: deleteLoading } = useDeletePost(id);
+
   return (
-    <Flex p="2">
+    <Flex>
       <Flex alignItems="center">
         <IconButton
           onClick={toggleLike}
           isLoading={likeLoading || authLoading}
-          size="md"
           colorScheme="red"
           variant="ghost"
           aria-label="Like"
           icon={isLiked ? <AiFillHeart /> : <AiOutlineHeart />}
+          _hover={{ color: 'red.500' }}
           isRound
         />
         <Text fontSize="md">{likes.length}</Text>
@@ -37,17 +40,25 @@ export default function PostActions({ post }: { post: Post }) {
         <IconButton
           as={Link}
           to={`${PROTECTED}/comments/${id}`}
-          // onClick={}
-          // isLoading={}
-          size="md"
           colorScheme="yellow"
           variant="ghost"
           aria-label="Comment"
           icon={<AiOutlineComment />}
+          _hover={{ color: 'yellow.500' }}
           isRound
         />
-        {/* <Text fontSize="md">{comments.length}</Text> */}1
+        1
       </Flex>
+      <IconButton
+        ml="auto"
+        onClick={deletePost}
+        isLoading={deleteLoading}
+        colorScheme="black"
+        variant="ghost"
+        aria-label="Delete"
+        icon={<BsTrashFill />}
+        isRound
+      />
     </Flex>
   );
 }

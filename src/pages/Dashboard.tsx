@@ -13,6 +13,7 @@ export default function Dashboard() {
     <Box px="4">
       <AddPost />
       {postsLoading ? (
+        // @ts-ignore
         <Box align="center">
           <Spinner size="xl" />
         </Box>

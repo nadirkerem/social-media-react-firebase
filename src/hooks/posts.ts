@@ -11,8 +11,12 @@ import {
   updateDoc,
   arrayRemove,
   arrayUnion,
+  DocumentReference,
 } from 'firebase/firestore';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
+import {
+  useCollectionData,
+  useDocumentData,
+} from 'react-firebase-hooks/firestore';
 
 import { db } from 'lib/firebase';
 import { toastOptions } from 'utils/toast';
@@ -42,18 +46,6 @@ export function useAddPost() {
   return { addPost, isLoading };
 }
 
-export function usePosts() {
-  const q = query(
-    collection(db, 'posts') as CollectionReference<Post>,
-    orderBy('createdAt', 'desc')
-  );
-  const [posts, isLoading, error] = useCollectionData<Post>(q);
-
-  if (error) throw new Error(error.message);
-
-  return { posts, isLoading };
-}
-
 export function useToggleLike({
   id,
   isLiked,
@@ -78,4 +70,43 @@ export function useToggleLike({
     toggleLike,
     isLoading,
   };
+}
+
+export function useDeletePost(id: string) {
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
+
+  async function deletePost() {
+    setIsLoading(true);
+    await updateDoc(doc(db, 'posts', id), {
+      deleted: true,
+    });
+    toast({
+      title: 'Post deleted',
+      status: 'success',
+      ...toastOptions,
+    });
+    setIsLoading(false);
+  }
+
+  return { deletePost, isLoading };
+}
+
+export function usePost(id: string) {
+  const q = doc(db, 'posts', id) as DocumentReference<Post>;
+  const [post, isLoading] = useDocumentData<Post>(q);
+
+  return { post, isLoading };
+}
+
+export function usePosts() {
+  const q = query(
+    collection(db, 'posts') as CollectionReference<Post>,
+    orderBy('createdAt', 'desc')
+  );
+  const [posts, isLoading, error] = useCollectionData<Post>(q);
+
+  if (error) throw new Error(error.message);
+
+  return { posts, isLoading };
 }

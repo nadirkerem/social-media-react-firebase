@@ -16,9 +16,8 @@ export default function PostHeader({ post }: { post: Post }) {
       alignItems="center"
       borderBottom="2px solid"
       borderColor="gray.300"
-      borderRadius="md"
+      borderRadius="sm"
       borderBottomRadius="none"
-      m="-0.5"
       bg="gray.300"
     >
       <Box mr="2">
