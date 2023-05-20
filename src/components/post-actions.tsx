@@ -1,15 +1,19 @@
 import { Text, Flex, IconButton } from '@chakra-ui/react';
 import { useAuth } from 'hooks/auth';
+import { useComments } from 'hooks/comments';
 import { useToggleLike, useDeletePost } from 'hooks/posts';
 import { PROTECTED } from 'lib/routes';
-import { AiFillHeart, AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { FaComment, FaRegComment } from 'react-icons/fa';
 import { BsTrashFill } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function PostActions({ post }: { post: Post }) {
   const { id, likes } = post;
 
   const { user, isLoading: authLoading } = useAuth();
+
+  const navigate = useNavigate();
 
   const isLiked = likes.includes(user?.id!);
 
@@ -20,6 +24,8 @@ export default function PostActions({ post }: { post: Post }) {
   });
 
   const { deletePost, isLoading: deleteLoading } = useDeletePost(id);
+
+  const { comments, isLoading: commentsLoading } = useComments(id);
 
   return (
     <Flex>
@@ -40,14 +46,14 @@ export default function PostActions({ post }: { post: Post }) {
         <IconButton
           as={Link}
           to={`${PROTECTED}/comments/${id}`}
-          colorScheme="yellow"
+          colorScheme="green"
           variant="ghost"
           aria-label="Comment"
-          icon={<AiOutlineComment />}
-          _hover={{ color: 'yellow.500' }}
+          icon={comments?.length === 0 ? <FaRegComment /> : <FaComment />}
+          _hover={{ color: 'green.500' }}
           isRound
         />
-        1
+        {comments?.length}
       </Flex>
       <IconButton
         ml="auto"

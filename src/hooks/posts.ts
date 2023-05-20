@@ -12,6 +12,9 @@ import {
   arrayRemove,
   arrayUnion,
   DocumentReference,
+  deleteDoc,
+  where,
+  getDocs,
 } from 'firebase/firestore';
 import {
   useCollectionData,
@@ -20,6 +23,7 @@ import {
 
 import { db } from 'lib/firebase';
 import { toastOptions } from 'utils/toast';
+import { useNavigate } from 'react-router-dom';
 
 export function useAddPost() {
   const [isLoading, setIsLoading] = useState(false);
@@ -73,20 +77,29 @@ export function useToggleLike({
 }
 
 export function useDeletePost(id: string) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const toast = useToast();
+  const navigate = useNavigate();
 
   async function deletePost() {
-    setIsLoading(true);
-    await updateDoc(doc(db, 'posts', id), {
-      deleted: true,
-    });
-    toast({
-      title: 'Post deleted',
-      status: 'success',
-      ...toastOptions,
-    });
-    setIsLoading(false);
+    const res = window.confirm('Are you sure you want to delete this post?');
+
+    if (res) {
+      setLoading(true);
+
+      await deleteDoc(doc(db, 'posts', id));
+
+      const q = query(collection(db, 'comments'), where('postID', '==', id));
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (doc) => deleteDoc(doc.ref));
+      toast({
+        title: 'Post deleted.',
+        status: 'success',
+        ...toastOptions,
+      });
+
+      setLoading(false);
+    }
   }
 
   return { deletePost, isLoading };

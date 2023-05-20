@@ -20,3 +20,11 @@ interface Post {
   updatedAt?: string;
   likes: string[];
 }
+
+interface Comment {
+  id: string;
+  uid: string;
+  text: string;
+  postID: string;
+  date: number;
+}

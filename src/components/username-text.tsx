@@ -20,7 +20,6 @@ export default function UsernameText({
       fontSize={size}
       color={color}
       fontWeight="bold"
-      _hover={{ textDecoration: 'underline' }}
     >
       {isLoading ? <>Loading...</> : <>@{user?.username}</>}
     </Text>

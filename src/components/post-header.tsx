@@ -5,9 +5,11 @@ import Avatar from 'components/avatar';
 
 import { useUser } from 'hooks/users';
 import UsernameText from './username-text';
+import { Link } from 'react-router-dom';
+import { PROTECTED } from 'lib/routes';
 
 export default function PostHeader({ post }: { post: Post }) {
-  const { uid, createdAt } = post;
+  const { uid, id, createdAt } = post;
   const { user, isLoading: userLoading } = useUser(uid);
 
   return (
@@ -29,7 +31,13 @@ export default function PostHeader({ post }: { post: Post }) {
         size="md"
         color="cyan.700"
       />
-      <Text fontSize="xs" color="gray.600" ml="auto">
+      <Text
+        as={Link}
+        to={`${PROTECTED}/comments/${id}`}
+        fontSize="xs"
+        color="gray.600"
+        ml="auto"
+      >
         {formatDistanceToNow(createdAt)} ago
       </Text>
     </Flex>

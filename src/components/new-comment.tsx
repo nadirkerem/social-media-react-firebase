@@ -22,7 +22,7 @@ export default function NewComment({ post }: { post: Post | undefined }) {
   if (authLoading) return <>Loading...</>;
 
   return (
-    <Box>
+    <Box maxW="600px">
       <Flex p="4">
         <Avatar user={user} size="sm" />
         <Box flex="1" ml="4">

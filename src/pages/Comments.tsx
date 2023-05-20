@@ -1,12 +1,20 @@
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box } from '@chakra-ui/react';
-import NewComment from 'components/new-comment';
-import Post from 'components/post';
+
 import { usePost } from 'hooks/posts';
-import { useParams } from 'react-router-dom';
+
+import Post from 'components/post';
+import NewComment from 'components/new-comment';
+import CommentList from 'components/comment-list';
 
 export default function Comments() {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const { post, isLoading: postLoading } = usePost(id as string);
+
+  if (!post) {
+    return navigate('/protected/dashboard');
+  }
 
   if (postLoading) {
     return <Box>Loading...</Box>;
@@ -17,6 +25,7 @@ export default function Comments() {
     <Box align="center" pt="50">
       {post && <Post post={post} />}
       <NewComment post={post} />
+      <CommentList post={post} />
     </Box>
   );
 }
