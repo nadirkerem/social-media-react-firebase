@@ -14,7 +14,7 @@ export default function Protected() {
   const { user, isLoading } = useAuth();
 
   useEffect(() => {
-    if (!isLoading && pathname.startsWith('/protected') && !user) {
+    if (!isLoading && pathname.startsWith('/') && !user) {
       navigate(LOGIN);
     }
   }, [isLoading, pathname, user]);

@@ -13,7 +13,7 @@ export default function Comments() {
   const { post, isLoading: postLoading } = usePost(id as string);
 
   if (!post) {
-    return navigate('/protected/dashboard');
+    return navigate('/dashboard');
   }
 
   if (postLoading) {

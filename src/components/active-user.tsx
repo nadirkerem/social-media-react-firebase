@@ -6,8 +6,6 @@ import UsernameText from './username-text';
 
 import { useAuth } from 'hooks/auth';
 
-import { PROTECTED } from 'lib/routes';
-
 export default function ActiveUser() {
   const { user, isLoading } = useAuth();
 
@@ -20,9 +18,7 @@ export default function ActiveUser() {
         size="2xl"
         color="white"
       />
-      <Button as={Link} to={`${PROTECTED}/profile/${user?.id}`} w="full">
-        Your Profile
-      </Button>
+      <Button w="full">Your Profile</Button>
     </Stack>
   );
 }

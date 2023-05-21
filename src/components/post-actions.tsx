@@ -2,7 +2,6 @@ import { Text, Flex, IconButton } from '@chakra-ui/react';
 import { useAuth } from 'hooks/auth';
 import { useComments } from 'hooks/comments';
 import { useToggleLike, useDeletePost } from 'hooks/posts';
-import { PROTECTED } from 'lib/routes';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { FaComment, FaRegComment } from 'react-icons/fa';
 import { BsTrashFill } from 'react-icons/bs';
@@ -45,7 +44,7 @@ export default function PostActions({ post }: { post: Post }) {
       <Flex alignItems="center" ml="2">
         <IconButton
           as={Link}
-          to={`${PROTECTED}/comments/${id}`}
+          to={`/comments/${id}`}
           colorScheme="green"
           variant="ghost"
           aria-label="Comment"

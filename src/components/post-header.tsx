@@ -6,7 +6,6 @@ import Avatar from 'components/avatar';
 import { useUser } from 'hooks/users';
 import UsernameText from './username-text';
 import { Link } from 'react-router-dom';
-import { PROTECTED } from 'lib/routes';
 
 export default function PostHeader({ post }: { post: Post }) {
   const { uid, id, createdAt } = post;
@@ -33,7 +32,7 @@ export default function PostHeader({ post }: { post: Post }) {
       />
       <Text
         as={Link}
-        to={`${PROTECTED}/comments/${id}`}
+        to={`/comments/${id}`}
         fontSize="xs"
         color="gray.600"
         ml="auto"

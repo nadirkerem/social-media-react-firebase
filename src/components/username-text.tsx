@@ -1,6 +1,4 @@
 import { Text } from '@chakra-ui/react';
-import { PROTECTED } from 'lib/routes';
-import { Link } from 'react-router-dom';
 
 export default function UsernameText({
   user,
@@ -14,13 +12,7 @@ export default function UsernameText({
   color: string;
 }) {
   return (
-    <Text
-      as={Link}
-      to={`${PROTECTED}/profile/${user?.id}`}
-      fontSize={size}
-      color={color}
-      fontWeight="bold"
-    >
+    <Text fontSize={size} color={color} fontWeight="bold">
       {isLoading ? <>Loading...</> : <>@{user?.username}</>}
     </Text>
   );

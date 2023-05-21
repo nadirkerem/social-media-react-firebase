@@ -9,16 +9,24 @@ export const ROOT = '/';
 export const LOGIN = '/login';
 export const REGISTER = '/register';
 
-export const PROTECTED = '/protected';
-export const DASHBOARD = '/protected/dashboard';
-export const USERS = '/protected/users';
-export const PROFILE = '/protected/profile/:id';
-export const COMMENTS = '/protected/comments/:id';
+export const DASHBOARD = '/dashboard';
+export const USERS = '/users';
+export const COMMENTS = '/comments/:id';
 
 export const router = createBrowserRouter([
   {
     path: ROOT,
-    element: 'Public Root',
+    element: <Protected />,
+    children: [
+      {
+        path: DASHBOARD,
+        element: <Dashboard />,
+      },
+      {
+        path: COMMENTS,
+        element: <Comments />,
+      },
+    ],
   },
   {
     path: LOGIN,
@@ -27,27 +35,5 @@ export const router = createBrowserRouter([
   {
     path: REGISTER,
     element: <Register />,
-  },
-  {
-    path: PROTECTED,
-    element: <Protected />,
-    children: [
-      {
-        path: DASHBOARD,
-        element: <Dashboard />,
-      },
-      {
-        path: PROFILE,
-        element: 'User profile',
-      },
-      {
-        path: USERS,
-        element: 'Users',
-      },
-      {
-        path: COMMENTS,
-        element: <Comments />,
-      },
-    ],
   },
 ]);
